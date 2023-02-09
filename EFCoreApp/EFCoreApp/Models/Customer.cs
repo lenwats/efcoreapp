@@ -6,6 +6,8 @@ namespace EFCoreApp.Models
     {
         public string CustomerName { get; set; }
 
+        public string Notes { get; set; }
+
         public virtual ICollection<Appointment> Appointments { get; set; }
 
         public virtual Address Address { get; set; }

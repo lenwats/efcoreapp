@@ -20,6 +20,8 @@ namespace EFCoreApp.Models
 
         public DateTime End { get; set; }
 
+        public string Notes { get; set; }
+
         public virtual AppUser AppUser { get; set; }
 
         public virtual Customer Customer { get; set; }
