@@ -7,22 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EFCoreApp.Data;
 using EFCoreApp.Models;
+using EFCoreApp.Models.Views;
+using AutoMapper;
 
 namespace EFCoreApp.Controllers
 {
-    public class AppointmentsController : Controller
+    public class AppointmentsController : BaseController
     {
-        private readonly ApplicationDbContext _context;
-
-        public AppointmentsController(ApplicationDbContext context)
+        public AppointmentsController(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
         {
-            _context = context;
+           
         }
 
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Appointments.ToListAsync());
+            return View(await Context.Appointments.ToListAsync());
         }
 
         // GET: Appointments/Details/5
@@ -34,10 +34,7 @@ namespace EFCoreApp.Controllers
             }
 
             //var appointment = await _context.Appointments.FirstOrDefaultAsync(m => m.Id == id);
-            var appointment = await _context.Appointments.Include(c => c.Customer)
-                                                        .ThenInclude(i => i.CustomerName)
-                                                        .AsNoTracking()
-                                                        .FirstOrDefaultAsync(x => x.Id == id);
+            var appointment = await Context.Appointments.Include(c => c.Customer).FirstOrDefaultAsync(x => x.Id == id);
             if (appointment == null)
             {
                 return NotFound();
@@ -49,7 +46,7 @@ namespace EFCoreApp.Controllers
         // GET: Appointments/Create
         public IActionResult Create()
         {
-            // TODO: Populate Customers list
+            PopulateCustomerList();
             return View();
         }
 
@@ -58,12 +55,12 @@ namespace EFCoreApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Customer,Title,Description,Location,Contact,Type,Url,Start,End,Notes,Id")] Appointment appointment)
+        public async Task<IActionResult> Create([Bind("Title,Description,Location,Contact,Type,Url,Start,End,Notes,Id")] AppointmentsViewModel appointment)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(appointment);
-                await _context.SaveChangesAsync();
+                Context.Add(appointment);
+                await Context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(appointment);
@@ -77,12 +74,24 @@ namespace EFCoreApp.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointments.FindAsync(id);
+            var appointment = await Context.Appointments.FirstOrDefaultAsync(x => x.Id == id);
+            //var appointment = await _context.Appointments
+            //    .Include(c => c.Customer)
+            //    .ThenInclude(cu => cu.Id)
+            //    .Include(u => u.AppUser)
+            //    .ThenInclude(ap => ap.Id)
+            //    .FirstOrDefaultAsync(x => x.Id == id);
+
+            PopulateCustomerList(appointment.Customer);
+
             if (appointment == null)
             {
                 return NotFound();
             }
-            return View(appointment);
+
+            var model = Mapper.Map<AppointmentsViewModel>(appointment);
+
+            return View(model);
         }
 
         // POST: Appointments/Edit/5
@@ -90,19 +99,23 @@ namespace EFCoreApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Customer,Title,Description,Location,Contact,Type,Url,Start,End,Notes,Id")] Appointment appointment)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,Description,Location,Contact,Type,Url,Start,End,Notes,Id")] AppointmentsViewModel appointment)
         {
             if (id != appointment.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && appointment.CustomerId != 0)
             {
                 try
                 {
-                    _context.Update(appointment);
-                    await _context.SaveChangesAsync();
+                    Context.Attach(appointment);
+                    var customer = Context.Customers.FirstOrDefault(x => x.Id == appointment.CustomerId);
+                    appointment.Customer = customer;
+
+                    Context.Update(appointment);
+                    await Context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -128,7 +141,7 @@ namespace EFCoreApp.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointments.FirstOrDefaultAsync(m => m.Id == id);
+            var appointment = await Context.Appointments.FirstOrDefaultAsync(m => m.Id == id);
             if (appointment == null)
             {
                 return NotFound();
@@ -142,25 +155,22 @@ namespace EFCoreApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var appointment = await _context.Appointments.FindAsync(id);
-            _context.Appointments.Remove(appointment);
-            await _context.SaveChangesAsync();
+            var appointment = await Context.Appointments.FindAsync(id);
+            Context.Appointments.Remove(appointment);
+            await Context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AppointmentExists(int id)
         {
-            return _context.Appointments.Any(e => e.Id == id);
+            return Context.Appointments.Any(e => e.Id == id);
         }
 
-        private void PopulateCustomerList()
+        private void PopulateCustomerList(object selectedCustomer = null)
         {
-            //var roleQuery = from r in Context.Territories
-            //                where UserTerritories.Contains(r.Id)
-            //                orderby r.Name
-            //                select r;
-            //ViewBag.TerritoryId = new SelectList(roleQuery, "Id", "Name", selectedTerritory);
+            var customersQuery = from c in Context.Customers orderby c.Id select c;
 
+            ViewBag.CustomerList = new SelectList(customersQuery, "Id", "CustomerName", selectedCustomer);
 
         }
 

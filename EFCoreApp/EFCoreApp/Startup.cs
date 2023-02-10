@@ -1,9 +1,13 @@
+using AutoMapper;
 using EFCoreApp.Data;
+using EFCoreApp.Models;
+using EFCoreApp.Models.Views;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +36,14 @@ namespace EFCoreApp
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Auto Mapper 
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddControllersWithViews();
         }
@@ -65,6 +77,17 @@ namespace EFCoreApp
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+        }
+
+        public class MappingProfile : Profile
+        {
+            public MappingProfile()
+            {
+                // Add as many of these lines as you need to map your objects
+                // Order does matter. map object on left to object on right.
+                CreateMap<Appointment, AppointmentsViewModel>();
+                CreateMap<Customer, CustomersViewModel>();
+            }
         }
     }
 }

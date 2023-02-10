@@ -7,22 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EFCoreApp.Data;
 using EFCoreApp.Models;
+using AutoMapper;
 
 namespace EFCoreApp.Controllers
 {
-    public class CustomersController : Controller
+    public class CustomersController : BaseController
     {
-        private readonly ApplicationDbContext _context;
 
-        public CustomersController(ApplicationDbContext context)
+        public CustomersController(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
         {
-            _context = context;
+
         }
 
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            return View(await Context.Customers.ToListAsync());
         }
 
         // GET: Customers/Details/5
@@ -34,7 +34,7 @@ namespace EFCoreApp.Controllers
             }
 
             //var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
-            var customer = await _context.Customers.Include(a => a.Appointments)
+            var customer = await Context.Customers.Include(a => a.Appointments)
                                                         .ThenInclude(i => i.Title)
                                                         .AsNoTracking()
                                                         .FirstOrDefaultAsync(x => x.Id == id);
@@ -60,12 +60,12 @@ namespace EFCoreApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerName,Notes,Address,Id")] Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerName,Notes,Id")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                Context.Add(customer);
+                await Context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
@@ -79,7 +79,7 @@ namespace EFCoreApp.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await Context.Customers.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
@@ -92,7 +92,7 @@ namespace EFCoreApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerName,Notes,Address,Id")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerName,Notes,Id")] Customer customer)
         {
             if (id != customer.Id)
             {
@@ -103,8 +103,8 @@ namespace EFCoreApp.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    Context.Update(customer);
+                    await Context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -130,7 +130,7 @@ namespace EFCoreApp.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await Context.Customers.FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();
@@ -144,15 +144,15 @@ namespace EFCoreApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
+            var customer = await Context.Customers.FindAsync(id);
+            Context.Customers.Remove(customer);
+            await Context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(int id)
         {
-            return _context.Customers.Any(e => e.Id == id);
+            return Context.Customers.Any(e => e.Id == id);
         }
 
         private void PopulateAppointmentList()
