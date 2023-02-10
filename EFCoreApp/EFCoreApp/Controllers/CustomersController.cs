@@ -33,7 +33,12 @@ namespace EFCoreApp.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
+            //var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _context.Customers.Include(a => a.Appointments)
+                                                        .ThenInclude(i => i.Title)
+                                                        .AsNoTracking()
+                                                        .FirstOrDefaultAsync(x => x.Id == id);
+
             if (customer == null)
             {
                 return NotFound();
@@ -45,6 +50,8 @@ namespace EFCoreApp.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
+            //TODO: Populate Appointment list
+
             return View();
         }
 
@@ -146,6 +153,11 @@ namespace EFCoreApp.Controllers
         private bool CustomerExists(int id)
         {
             return _context.Customers.Any(e => e.Id == id);
+        }
+
+        private void PopulateAppointmentList()
+        {
+
         }
     }
 }

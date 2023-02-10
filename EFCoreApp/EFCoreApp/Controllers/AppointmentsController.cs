@@ -33,7 +33,11 @@ namespace EFCoreApp.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointments.FirstOrDefaultAsync(m => m.Id == id);
+            //var appointment = await _context.Appointments.FirstOrDefaultAsync(m => m.Id == id);
+            var appointment = await _context.Appointments.Include(c => c.Customer)
+                                                        .ThenInclude(i => i.CustomerName)
+                                                        .AsNoTracking()
+                                                        .FirstOrDefaultAsync(x => x.Id == id);
             if (appointment == null)
             {
                 return NotFound();
@@ -45,6 +49,7 @@ namespace EFCoreApp.Controllers
         // GET: Appointments/Create
         public IActionResult Create()
         {
+            // TODO: Populate Customers list
             return View();
         }
 
@@ -147,5 +152,17 @@ namespace EFCoreApp.Controllers
         {
             return _context.Appointments.Any(e => e.Id == id);
         }
+
+        private void PopulateCustomerList()
+        {
+            //var roleQuery = from r in Context.Territories
+            //                where UserTerritories.Contains(r.Id)
+            //                orderby r.Name
+            //                select r;
+            //ViewBag.TerritoryId = new SelectList(roleQuery, "Id", "Name", selectedTerritory);
+
+
+        }
+
     }
 }
