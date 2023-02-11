@@ -1,4 +1,5 @@
-﻿@model EFCoreApp.Models.Views.AppointmentsViewModel
+﻿@using EFCoreApp.ViewModels;
+@model AppointmentsViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -14,56 +15,56 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="CustomerId" class="control-label">Customer</label>
-                @Html.DropDownListFor(m => m.CustomerId, (SelectList)ViewBag.CustomerList, "Choose a Customer", new { @class = "form-control"})
-                <span asp-validation-for="CustomerId" class="text-danger"></span>
+                <label asp-for="Customers" class="control-label">Customer</label>
+                @Html.DropDownListFor(m => m.SelectedCustomerId, new SelectList( Model.Customers, "Id", "CustomerName"), "Choose a Customer", new { @class = "form-control"})
+                <span asp-validation-for="Customers" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="Appointment.Title" class="control-label"></label>
+                <input asp-for="Appointment.Title" class="form-control" />
+                <span asp-validation-for="Appointment.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Appointment.Description" class="control-label"></label>
+                <input asp-for="Appointment.Description" class="form-control" />
+                <span asp-validation-for="Appointment.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
+                <label asp-for="Appointment.Location" class="control-label"></label>
+                <input asp-for="Appointment.Location" class="form-control" />
+                <span asp-validation-for="Appointment.Location" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Contact" class="control-label"></label>
-                <input asp-for="Contact" class="form-control" />
-                <span asp-validation-for="Contact" class="text-danger"></span>
+                <label asp-for="Appointment.Contact" class="control-label"></label>
+                <input asp-for="Appointment.Contact" class="form-control" />
+                <span asp-validation-for="Appointment.Contact" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
+                <label asp-for="Appointment.Type" class="control-label"></label>
+                <input asp-for="Appointment.Type" class="form-control" />
+                <span asp-validation-for="Appointment.Type" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Url" class="control-label"></label>
-                <input asp-for="Url" class="form-control" />
-                <span asp-validation-for="Url" class="text-danger"></span>
+                <label asp-for="Appointment.Url" class="control-label"></label>
+                <input asp-for="Appointment.Url" class="form-control" />
+                <span asp-validation-for="Appointment.Url" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Start" class="control-label"></label>
-                <input asp-for="Start" class="form-control" />
-                <span asp-validation-for="Start" class="text-danger"></span>
+                <label asp-for="Appointment.Start" class="control-label"></label>
+                <input asp-for="Appointment.Start" class="form-control" />
+                <span asp-validation-for="Appointment.Start" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="End" class="control-label"></label>
-                <input asp-for="End" class="form-control" />
-                <span asp-validation-for="End" class="text-danger"></span>
+                <label asp-for="Appointment.End" class="control-label"></label>
+                <input asp-for="Appointment.End" class="form-control" />
+                <span asp-validation-for="Appointment.End" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
+                <label asp-for="Appointment.Notes" class="control-label"></label>
+                <input asp-for="Appointment.Notes" class="form-control" />
+                <span asp-validation-for="Appointment.Notes" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Appointment.Id" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using EFCoreApp.Models;
 
-namespace EFCoreApp.Models.Views
+namespace EFCoreApp.ViewModels
 {
     public class CustomersViewModel : Customer
     {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EFCoreApp.Data;
 using EFCoreApp.Models;
-using EFCoreApp.Models.Views;
+using EFCoreApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

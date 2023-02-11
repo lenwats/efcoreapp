@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EFCoreApp.Data;
 using EFCoreApp.Models;
-using EFCoreApp.Models.Views;
 using AutoMapper;
+using EFCoreApp.ViewModels;
 
 namespace EFCoreApp.Controllers
 {
@@ -16,7 +16,7 @@ namespace EFCoreApp.Controllers
     {
         public AppointmentsController(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
         {
-           
+
         }
 
         // GET: Appointments
@@ -75,23 +75,19 @@ namespace EFCoreApp.Controllers
             }
 
             var appointment = await Context.Appointments.FirstOrDefaultAsync(x => x.Id == id);
-            //var appointment = await _context.Appointments
-            //    .Include(c => c.Customer)
-            //    .ThenInclude(cu => cu.Id)
-            //    .Include(u => u.AppUser)
-            //    .ThenInclude(ap => ap.Id)
-            //    .FirstOrDefaultAsync(x => x.Id == id);
-
-            PopulateCustomerList(appointment.Customer);
 
             if (appointment == null)
             {
                 return NotFound();
             }
 
-            var model = Mapper.Map<AppointmentsViewModel>(appointment);
+            var viewModel = new AppointmentsViewModel
+            {
+                Appointment = appointment,
+                Customers = Context.Customers
+            };
 
-            return View(model);
+            return View(viewModel);
         }
 
         // POST: Appointments/Edit/5
@@ -99,29 +95,25 @@ namespace EFCoreApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,Customer,Description,Location,Contact,Type,Url,Start,End,Notes,Id")] AppointmentsViewModel appointment)
+        public async Task<IActionResult> Edit(int id, AppointmentsViewModel viewModel)
         {
-            if (id != appointment.Id)
+            if (id != viewModel?.Appointment?.Id)
             {
                 return NotFound();
             }
 
-
-            // CUSTOMER ID IS 0
             if (ModelState.IsValid)
             {
                 try
                 {
-                    Context.Attach(appointment);
-                    var customer = Context.Customers.FirstOrDefault(x => x.Id == appointment.CustomerId);
-                    appointment.Customer = customer;
+                    viewModel.Appointment.Customer = await Context.Customers.FirstOrDefaultAsync(x => x.Id == viewModel.SelectedCustomerId);
 
-                    Context.Update(appointment);
+                    Context.Update(viewModel.Appointment);
                     await Context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AppointmentExists(appointment.Id))
+                    if (!AppointmentExists(viewModel.Appointment.Id))
                     {
                         return NotFound();
                     }
@@ -132,7 +124,7 @@ namespace EFCoreApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(appointment);
+            return View(viewModel);
         }
 
         // GET: Appointments/Delete/5

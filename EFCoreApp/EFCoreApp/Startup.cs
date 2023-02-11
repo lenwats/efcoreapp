@@ -1,7 +1,7 @@
 using AutoMapper;
 using EFCoreApp.Data;
 using EFCoreApp.Models;
-using EFCoreApp.Models.Views;
+using EFCoreApp.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -85,8 +85,8 @@ namespace EFCoreApp
             {
                 // Add as many of these lines as you need to map your objects
                 // Order does matter. map object on left to object on right.
-                CreateMap<Appointment, AppointmentsViewModel>();
-                CreateMap<Customer, CustomersViewModel>();
+                //CreateMap<Appointment, AppointmentsViewModel>();
+                //CreateMap<Customer, CustomersViewModel>();
             }
         }
     }
