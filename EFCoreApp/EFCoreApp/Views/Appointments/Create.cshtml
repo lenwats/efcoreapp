@@ -1,5 +1,4 @@
-﻿@using EFCoreApp.ViewModels;
-@model AppointmentsViewModel
+﻿@model EFCoreApp.ViewModels.AppointmentsViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -16,7 +15,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Customers" class="control-label">Customer</label>
-                @Html.DropDownListFor(m => m.SelectedCustomerId, new SelectList( Model.Customers), "Choose a Customer", new { @class = "form-control"})
+                @*@Html.DropDownListFor(m => m.SelectedCustomerId, new SelectList(Model.Customers), "Choose a Customer", new { @class = "form-control"})*@
+                @Html.DropDownListFor(m => m.SelectedCustomerId, new SelectList(Model.Customers, "Id", "CustomerName"), "Choose a Customer", new { @class = "form-control"})
                 <span asp-validation-for="Customers" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -64,9 +64,9 @@
                 <input asp-for="Appointment.Notes" class="form-control" />
                 <span asp-validation-for="Appointment.Notes" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Appointment.Id" />
+            @*<input type="hidden" asp-for="Appointment.Id" />*@
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

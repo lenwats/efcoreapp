@@ -44,26 +44,73 @@ namespace EFCoreApp.Controllers
         }
 
         // GET: Appointments/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
+
+            var appointment = Context.Appointments.FirstOrDefault(x => x.Id == id);
+
+            var viewModel = new AppointmentsViewModel
+            {
+                Appointment = appointment,
+                Customers = Context.Customers
+            };
+
             PopulateCustomerList();
-            return View();
+            return View(viewModel);
+            //return View();
         }
 
         // POST: Appointments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Title,Description,Location,Contact,Type,Url,Start,End,Notes,Id")] AppointmentsViewModel appt)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        Context.Add(appt);
+        //        await Context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(appt);
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Description,Location,Contact,Type,Url,Start,End,Notes,Id")] AppointmentsViewModel appointment)
+        public async Task<IActionResult> Create(int id, AppointmentsViewModel viewModel)
         {
+            if (id != viewModel?.Appointment?.Id)
+            {
+                return NotFound();
+            }
+
+            //if (ModelState.IsValid)
+            //{
+            //    Context.Add(viewModel);
+            //    await Context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
             if (ModelState.IsValid)
             {
-                Context.Add(appointment);
-                await Context.SaveChangesAsync();
+                try
+                {
+                    viewModel.Appointment.Customer = await Context.Customers.FirstOrDefaultAsync(x => x.Id == viewModel.SelectedCustomerId);
+
+                    Context.Update(viewModel.Appointment);
+                    await Context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AppointmentExists(viewModel.Appointment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            return View(appointment);
+            return View(viewModel);
         }
 
         // GET: Appointments/Edit/5
@@ -162,7 +209,8 @@ namespace EFCoreApp.Controllers
 
         private void PopulateCustomerList(object selectedCustomer = null)
         {
-            var customersQuery = from c in Context.Customers orderby c.Id select c;
+            //var customersQuery = from c in Context.Customers orderby c.Id select c;
+            var customersQuery = Context.Customers.OrderBy(c => c.Id).ToList();
 
             ViewBag.CustomerList = new SelectList(customersQuery, "Id", "CustomerName", selectedCustomer);
 

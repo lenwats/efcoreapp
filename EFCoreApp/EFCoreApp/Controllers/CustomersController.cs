@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EFCoreApp.Data;
 using EFCoreApp.Models;
 using AutoMapper;
+using EFCoreApp.ViewModels;
 
 namespace EFCoreApp.Controllers
 {
@@ -33,10 +34,8 @@ namespace EFCoreApp.Controllers
                 return NotFound();
             }
 
-            //var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
-            var customer = await Context.Customers.Include(a => a.Address).ThenInclude(c => c.City).FirstOrDefaultAsync(i => i.Id == id);
+            var customer = await Context.Customers.FirstOrDefaultAsync(i => i.Id == id);
                                                         
-
             if (customer == null)
             {
                 return NotFound();
@@ -56,7 +55,7 @@ namespace EFCoreApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerName,Notes,Id")] Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerName,Notes,Address1,Address2,PostalCode,Phone,City,Country,Id")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +87,7 @@ namespace EFCoreApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerName,Notes,Id")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerName,Notes,Address1,Address2,PostalCode,Phone,City,Country,Id")] Customer customer)
         {
             if (id != customer.Id)
             {
@@ -151,9 +150,5 @@ namespace EFCoreApp.Controllers
             return Context.Customers.Any(e => e.Id == id);
         }
 
-        private void PopulateAppointmentList()
-        {
-
-        }
     }
 }
