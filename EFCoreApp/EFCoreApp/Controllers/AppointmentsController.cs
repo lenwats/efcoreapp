@@ -22,7 +22,7 @@ namespace EFCoreApp.Controllers
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            return View(await Context.Appointments.ToListAsync());
+            return View(await Context.Appointments.Include(c => c.Customer).ToListAsync());
         }
 
         // GET: Appointments/Details/5
@@ -33,7 +33,6 @@ namespace EFCoreApp.Controllers
                 return NotFound();
             }
 
-            //var appointment = await _context.Appointments.FirstOrDefaultAsync(m => m.Id == id);
             var appointment = await Context.Appointments.Include(c => c.Customer).FirstOrDefaultAsync(x => x.Id == id);
             if (appointment == null)
             {
@@ -82,12 +81,6 @@ namespace EFCoreApp.Controllers
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
-            //    Context.Add(viewModel);
-            //    await Context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
             if (ModelState.IsValid)
             {
                 try
