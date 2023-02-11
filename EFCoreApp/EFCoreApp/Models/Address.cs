@@ -16,6 +16,9 @@ namespace EFCoreApp.Models
         [DisplayName("Phone Number"), Required]
         public string Phone { get; set; }
 
-        public virtual City City { get; set; }
+        [Required]
+        public string City { get; set; }
+
+        public string Country { get; set; }
     }
 }

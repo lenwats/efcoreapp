@@ -1,5 +1,9 @@
-﻿using EFCoreApp.Models;
+﻿using AutoMapper;
+using EFCoreApp.Data;
+using EFCoreApp.Models;
+using EFCoreApp.Models.Views;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,18 +13,27 @@ using System.Threading.Tasks;
 
 namespace EFCoreApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
         {
-            _logger = logger;
+            //_logger = logger;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var appts = Context.Appointments.Include(c => c.Customer).ToList();
+
+            var model = new HomeViewModel
+            {
+                Appointments = appts
+            };
+
+            // TODO: Need to get logged in user
+
+            return View(model);
         }
 
         public IActionResult Privacy()

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EFCoreApp.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace EFCoreApp.Controllers
 {
@@ -8,6 +9,7 @@ namespace EFCoreApp.Controllers
     {
         protected readonly IMapper Mapper;
         protected readonly ApplicationDbContext Context;
+        //private readonly ILogger<HomeController> Logger;
 
         public BaseController(ApplicationDbContext context, IMapper mapper)
         {

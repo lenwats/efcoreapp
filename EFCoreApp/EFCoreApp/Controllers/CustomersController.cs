@@ -34,10 +34,8 @@ namespace EFCoreApp.Controllers
             }
 
             //var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
-            var customer = await Context.Customers.Include(a => a.Appointments)
-                                                        .ThenInclude(i => i.Title)
-                                                        .AsNoTracking()
-                                                        .FirstOrDefaultAsync(x => x.Id == id);
+            var customer = await Context.Customers.Include(a => a.Address).ThenInclude(c => c.City).FirstOrDefaultAsync(i => i.Id == id);
+                                                        
 
             if (customer == null)
             {
@@ -50,8 +48,6 @@ namespace EFCoreApp.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
-            //TODO: Populate Appointment list
-
             return View();
         }
 

@@ -99,14 +99,16 @@ namespace EFCoreApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,Description,Location,Contact,Type,Url,Start,End,Notes,Id")] AppointmentsViewModel appointment)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,Customer,Description,Location,Contact,Type,Url,Start,End,Notes,Id")] AppointmentsViewModel appointment)
         {
             if (id != appointment.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid && appointment.CustomerId != 0)
+
+            // CUSTOMER ID IS 0
+            if (ModelState.IsValid)
             {
                 try
                 {
