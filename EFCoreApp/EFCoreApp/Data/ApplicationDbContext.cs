@@ -30,6 +30,9 @@ namespace EFCoreApp.Data
             modelBuilder.Entity<Country>().ToTable(nameof(Country));
             modelBuilder.Entity<Customer>().ToTable(nameof(Customer));
             modelBuilder.Entity<AppUser>().ToTable(nameof(AppUser));
+
+            modelBuilder.Entity<Customer>().HasMany(c => c.Appointments).WithOne(a => a.Customer).OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

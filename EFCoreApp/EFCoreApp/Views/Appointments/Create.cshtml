@@ -1,0 +1,81 @@
+﻿@model EFCoreApp.ViewModels.AppointmentsViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Appointment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Customers" class="control-label">Customer</label>
+                @*@Html.DropDownListFor(m => m.SelectedCustomerId, new SelectList(Model.Customers), "Choose a Customer", new { @class = "form-control"})*@
+                @Html.DropDownListFor(m => m.SelectedCustomerId, new SelectList(Model.Customers, "Id", "CustomerName"), "Choose a Customer", new { @class = "form-control"})
+                <span asp-validation-for="Customers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appointment.Title" class="control-label"></label>
+                <input asp-for="Appointment.Title" class="form-control" />
+                <span asp-validation-for="Appointment.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appointment.Description" class="control-label"></label>
+                <input asp-for="Appointment.Description" class="form-control" />
+                <span asp-validation-for="Appointment.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appointment.Location" class="control-label"></label>
+                <input asp-for="Appointment.Location" class="form-control" />
+                <span asp-validation-for="Appointment.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appointment.Contact" class="control-label"></label>
+                <input asp-for="Appointment.Contact" class="form-control" />
+                <span asp-validation-for="Appointment.Contact" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appointment.Type" class="control-label"></label>
+                <input asp-for="Appointment.Type" class="form-control" />
+                <span asp-validation-for="Appointment.Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appointment.Url" class="control-label"></label>
+                <input asp-for="Appointment.Url" class="form-control" />
+                <span asp-validation-for="Appointment.Url" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appointment.Start" class="control-label"></label>
+                <input asp-for="Appointment.Start" class="form-control" />
+                <span asp-validation-for="Appointment.Start" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appointment.End" class="control-label"></label>
+                <input asp-for="Appointment.End" class="form-control" />
+                <span asp-validation-for="Appointment.End" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appointment.Notes" class="control-label"></label>
+                <input asp-for="Appointment.Notes" class="form-control" />
+                <span asp-validation-for="Appointment.Notes" class="text-danger"></span>
+            </div>
+            @*<input type="hidden" asp-for="Appointment.Id" />*@
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
