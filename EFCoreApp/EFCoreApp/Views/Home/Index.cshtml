@@ -13,11 +13,11 @@
     {
         <h1>Good morning</h1>
     }
-    @if (now < morning && now >= afternoon && now < evening)
+    else if (now > morning && now >= afternoon && now < evening)
     {
         <h1>Good afternoon</h1>
     }
-    @if (now < morning && now < afternoon && now >= evening)
+    else if (now > morning && now > afternoon && now >= evening)
     {
         <h1>Good evening</h1>
     }
