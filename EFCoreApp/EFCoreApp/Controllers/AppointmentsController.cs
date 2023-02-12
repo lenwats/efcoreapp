@@ -9,6 +9,7 @@ using EFCoreApp.Data;
 using EFCoreApp.Models;
 using AutoMapper;
 using EFCoreApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EFCoreApp.Controllers
 {
@@ -19,7 +20,7 @@ namespace EFCoreApp.Controllers
 
         }
 
-        // GET: Appointments
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await Context.Appointments.Include(c => c.Customer).ToListAsync());
