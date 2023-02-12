@@ -9,6 +9,7 @@ using EFCoreApp.Data;
 using EFCoreApp.Models;
 using AutoMapper;
 using EFCoreApp.ViewModels;
+using Microsoft.Data.SqlClient;
 
 namespace EFCoreApp.Controllers
 {
@@ -21,9 +22,32 @@ namespace EFCoreApp.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            return View(await Context.Customers.ToListAsync());
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["LocationSortParm"] = String.IsNullOrEmpty(sortOrder) ? "location_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+
+            var customers = from c in Context.Customers select c;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                customers = customers.Where(c => c.CustomerName.Contains(searchString) || c.City.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    customers = customers.OrderByDescending(c => c.CustomerName);
+                    break;
+                case "location_desc":
+                    customers = customers.OrderByDescending(c => c.City);
+                    break;
+                default:
+                    customers = customers.OrderBy(c => c.CustomerName);
+                    break;
+            }
+            return View(await customers.AsNoTracking().ToListAsync());
         }
 
         // GET: Customers/Details/5

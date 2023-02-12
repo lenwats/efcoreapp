@@ -1,9 +1,26 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+    TimeSpan morning = TimeSpan.Parse("00:00");
+    TimeSpan afternoon = TimeSpan.Parse("12:01");
+    TimeSpan evening = TimeSpan.Parse("18:00");
+    TimeSpan now = DateTime.Now.TimeOfDay;
+
 }
 
 <div class="jumbotron">
-    <h1>Greeting</h1>
+    @if (now >= morning && now < afternoon && now < evening)
+    {
+        <h1>Good morning</h1>
+    }
+    @if (now < morning && now >= afternoon && now < evening)
+    {
+        <h1>Good afternoon</h1>
+    }
+    @if (now < morning && now < afternoon && now >= evening)
+    {
+        <h1>Good evening</h1>
+    }
 </div>
 <div class="row">
     <div class="col-md-4">
