@@ -1,23 +1,41 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+    TimeSpan morning = TimeSpan.Parse("00:00");
+    TimeSpan afternoon = TimeSpan.Parse("12:01");
+    TimeSpan evening = TimeSpan.Parse("18:00");
+    TimeSpan now = DateTime.Now.TimeOfDay;
 }
 
 <div class="jumbotron">
-    <h1>Greeting</h1>
+    @if (now >= morning && now < afternoon && now < evening)
+    {
+        <h1>Good morning, {username or firstname}</h1>
+    }
+    else if (now > morning && now >= afternoon && now < evening)
+    {
+        <h1>Good afternoon, {username or firstname}</h1>
+    }
+    else if (now > morning && now > afternoon && now >= evening)
+    {
+        <h1>Good evening, {username or firstname}</h1>
+    }
+    <p>You have <span class="text-danger">{GetUserAppts}</span> appointments today</p>
 </div>
 <div class="row">
     <div class="col-md-4">
         <h2>Your appointments</h2>
-        <p>
-            Show today's appts or just a link to appts page
-        </p>
+        <p>Manage your past and upcoming appoinments</p>
+        <p><a href="/Appointments" class="btn btn-primary">Go to Appointments</a></p>
     </div>
     <div class="col-md-4">
         <h2>Customers</h2>
-        <p>Interact with your customers here (link)</p>
+        <p>Interact with your customers</p>
+        <p><a href="/Customers" class="btn btn-primary">Go to Customers</a></p>
     </div>
     <div class="col-md-4">
         <h2>Profile</h2>
         <p>Change your password or other details here</p>
+        <p><a href="/Account/Manage" class="btn btn-primary">Go to Profile</a></p>
     </div>
 </div>

@@ -9,6 +9,7 @@ using EFCoreApp.Data;
 using EFCoreApp.Models;
 using AutoMapper;
 using EFCoreApp.ViewModels;
+using Microsoft.Data.SqlClient;
 
 namespace EFCoreApp.Controllers
 {
@@ -20,9 +21,40 @@ namespace EFCoreApp.Controllers
         }
 
         // GET: Appointments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            return View(await Context.Appointments.Include(c => c.Customer).ToListAsync());
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["CurrentFilter"] = searchString;
+
+            var appts = from a in Context.Appointments select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                appts = appts.Where(a => a.Title.Contains(searchString)
+                                    || a.Customer.CustomerName.Contains(searchString)
+                                    || a.Contact.Contains(searchString)
+                                    || a.Location.Contains(searchString)
+                                    || a.Type.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    appts = appts.OrderByDescending(a => a.Title);
+                    break;
+                case "Date":
+                    appts = appts.OrderBy(a => a.Start);
+                    break;
+                case "date_desc":
+                    appts = appts.OrderByDescending(a => a.Start);
+                    break;
+                default:
+                    appts = appts.OrderBy(a => a.Title);
+                    break;
+            }
+
+            return View(await appts.Include(c => c.Customer).AsNoTracking().ToListAsync());
         }
 
         // GET: Appointments/Details/5
