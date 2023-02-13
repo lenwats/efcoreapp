@@ -26,16 +26,16 @@
     <div class="col-md-4">
         <h2>Your appointments</h2>
         <p>Manage your past and upcoming appoinments</p>
-        <p><a href="/Appointments" class="btn btn-primary">Go to Appointments</a></p>
+        <p><a class="btn btn-primary" asp-area="" asp-controller="Appointments" asp-action="Index">Go to Appointments</a></p>
     </div>
     <div class="col-md-4">
         <h2>Customers</h2>
         <p>Interact with your customers</p>
-        <p><a href="/Customers" class="btn btn-primary">Go to Customers</a></p>
+        <p><a class="btn btn-primary" asp-area="" asp-controller="Customers" asp-action="Index">Go to Customers</a></p>
     </div>
     <div class="col-md-4">
         <h2>Profile</h2>
         <p>Change your password or other details here</p>
-        <p><a href="/Account/Manage" class="btn btn-primary">Go to Profile</a></p>
+        <p><a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Go to Profile</a></p>
     </div>
 </div>
