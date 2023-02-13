@@ -1,4 +1,8 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 
     TimeSpan morning = TimeSpan.Parse("00:00");
@@ -10,15 +14,15 @@
 <div class="jumbotron">
     @if (now >= morning && now < afternoon && now < evening)
     {
-        <h1>Good morning, {username or firstname}</h1>
+        <h1>Good morning, @User.Identity.Name!</h1>
     }
     else if (now > morning && now >= afternoon && now < evening)
     {
-        <h1>Good afternoon, {username or firstname}</h1>
+        <h1>Good afternoon, @User.Identity.Name!</h1>
     }
     else if (now > morning && now > afternoon && now >= evening)
     {
-        <h1>Good evening, {username or firstname}</h1>
+        <h1>Good evening, @User.Identity.Name!</h1>
     }
     <p>You have <span class="text-danger">{GetUserAppts}</span> appointments today</p>
 </div>
