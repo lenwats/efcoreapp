@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EFCoreApp.Models
 {
-    public class AppUser : BaseModel
+    public class AppUser : IdentityUser
     {
         [Required]
-        public string UserName { get; set; }
+        public string FirstName { get; set; }
 
         [Required]
-        public string Password { get; set; }
+        public string LastName { get; set; }
 
-        public string Email { get; set; }
-
-        public virtual ICollection<Appointment> Appointments { get; set; }
+        //public virtual ICollection<Appointment> Appointments { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using EFCoreApp.Data;
 using EFCoreApp.Models;
 using EFCoreApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,7 @@ namespace EFCoreApp.Controllers
             //_logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             var appts = Context.Appointments.Include(c => c.Customer).ToList();

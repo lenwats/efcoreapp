@@ -10,6 +10,7 @@ using EFCoreApp.Models;
 using AutoMapper;
 using EFCoreApp.ViewModels;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EFCoreApp.Controllers
 {
@@ -21,7 +22,7 @@ namespace EFCoreApp.Controllers
 
         }
 
-        // GET: Customers
+        [Authorize]
         public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
