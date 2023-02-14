@@ -92,19 +92,7 @@ namespace EFCoreApp.Controllers
             //return View();
         }
 
-        // POST: Appointments/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Title,Description,Location,Contact,Type,Url,Start,End,Notes,Id")] AppointmentsViewModel appt)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        Context.Add(appt);
-        //        await Context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(appt);
-        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, AppointmentsViewModel viewModel)

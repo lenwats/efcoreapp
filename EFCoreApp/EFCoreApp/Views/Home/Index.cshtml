@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using EFCoreApp.ViewModels
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
+@model HomeViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -9,6 +11,9 @@
     TimeSpan afternoon = TimeSpan.Parse("12:01");
     TimeSpan evening = TimeSpan.Parse("18:00");
     TimeSpan now = DateTime.Now.TimeOfDay;
+
+    var today = DateTime.Today;
+    var apptList = Model.Appointments.Where(a => a.Start.Date == today).Count();
 }
 
 <div class="jumbotron">
@@ -24,7 +29,11 @@
     {
         <h1>Good evening, @User.Identity.Name!</h1>
     }
-    <p>You have <span class="text-danger">{GetUserAppts}</span> appointments today</p>
+    @if (Model.Appointments.Any())
+    {
+        <p>You have <span class="text-danger">@apptList</span> appointment(s) today</p>       
+    }
+
 </div>
 <div class="row">
     <div class="col-md-4">

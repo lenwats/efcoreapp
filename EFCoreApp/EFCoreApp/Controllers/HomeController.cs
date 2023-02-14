@@ -26,14 +26,12 @@ namespace EFCoreApp.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            var appts = Context.Appointments.Include(c => c.Customer).ToList();
+            var appts = Context.Appointments.ToList();
 
             var model = new HomeViewModel
             {
                 Appointments = appts
             };
-
-            // TODO: Need to get logged in user
 
             return View(model);
         }

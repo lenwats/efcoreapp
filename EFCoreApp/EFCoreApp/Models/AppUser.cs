@@ -12,6 +12,6 @@ namespace EFCoreApp.Models
         [Required]
         public string LastName { get; set; }
 
-        //public virtual ICollection<Appointment> Appointments { get; set; }
+        public virtual ICollection<Appointment> Appointments { get; set; }
     }
 }
