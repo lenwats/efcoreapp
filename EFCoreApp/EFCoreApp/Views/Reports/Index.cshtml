@@ -1,0 +1,22 @@
+﻿@model EFCoreApp.ViewModels.ReportsViewModel
+
+@{
+    ViewData["Title"] = "Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron"><h1>Reports</h1></div>
+
+<div class="container">
+    <form asp-action="GenerateReport">
+        <div class="form-group">
+            <label asp-for="Customers" class="control-label">Select a Customer to generate a report on:</label>
+            @Html.DropDownListFor(m => m.SelectedCustomerId, new SelectList(Model.Customers, "Id", "CustomerName"), "Choose a Customer", new { @class = "form-control"})
+            <span asp-validation-for="Customers" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Generate" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

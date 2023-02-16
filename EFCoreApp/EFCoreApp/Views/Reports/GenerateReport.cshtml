@@ -1,0 +1,65 @@
+﻿@model EFCoreApp.ViewModels.ReportsViewModel
+@{
+    ViewData["Title"] = "GenerateReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var today = DateTime.Today.Date;
+}
+
+<div class="jumbotron">
+    <h1>Generated Report</h1>
+    <h4>Today, @today</h4>
+</div>
+
+<div>
+    <h4>Customer: @Model.Customer.CustomerName</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customer.Notes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customer.Address1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customer.Address2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customer.PostalCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customer.City)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customer.Phone)
+                </th>           
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelcustomer => Model.Customer.Notes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelcustomer => Model.Customer.Address1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelcustomer => Model.Customer.Address2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelcustomer => Model.Customer.PostalCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelcustomer => Model.Customer.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelcustomer => Model.Customer.Phone)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Index">Create Another Report</a>
+</div>

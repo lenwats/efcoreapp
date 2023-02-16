@@ -224,7 +224,6 @@ namespace EFCoreApp.Controllers
             var customersQuery = Context.Customers.OrderBy(c => c.Id).ToList();
 
             ViewBag.CustomerList = new SelectList(customersQuery, "Id", "CustomerName", selectedCustomer);
-
         }
 
     }
