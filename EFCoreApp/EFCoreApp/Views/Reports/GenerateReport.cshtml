@@ -17,6 +17,9 @@
         <thead>
             <tr>
                 <th>
+                    @Html.DisplayNameFor(model => model.Customer.Id)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Customer.Notes)
                 </th>
                 <th>
@@ -38,6 +41,9 @@
         </thead>
         <tbody>
             <tr>
+                <td>
+                    @Html.DisplayFor(modelcustomer => Model.Customer.Id)
+                </td>
                 <td>
                     @Html.DisplayFor(modelcustomer => Model.Customer.Notes)
                 </td>
