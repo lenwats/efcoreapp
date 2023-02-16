@@ -8,7 +8,9 @@ namespace EFCoreApp.ViewModels
     public class AppointmentsViewModel 
     {
         public Appointment Appointment { get; set; }
+
         public IEnumerable<Customer> Customers { get; set; }
+
         public int SelectedCustomerId { get; set; }
     }
 }

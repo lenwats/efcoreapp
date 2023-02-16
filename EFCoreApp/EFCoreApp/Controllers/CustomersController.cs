@@ -76,8 +76,6 @@ namespace EFCoreApp.Controllers
         }
 
         // POST: Customers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CustomerName,Notes,Address1,Address2,PostalCode,Phone,City,Country,Id")] Customer customer)
@@ -108,8 +106,6 @@ namespace EFCoreApp.Controllers
         }
 
         // POST: Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CustomerName,Notes,Address1,Address2,PostalCode,Phone,City,Country,Id")] Customer customer)

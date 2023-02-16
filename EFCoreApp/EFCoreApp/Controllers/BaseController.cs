@@ -9,7 +9,6 @@ namespace EFCoreApp.Controllers
     {
         protected readonly IMapper Mapper;
         protected readonly ApplicationDbContext Context;
-        //private readonly ILogger<HomeController> Logger;
 
         public BaseController(ApplicationDbContext context, IMapper mapper)
         {

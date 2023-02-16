@@ -152,8 +152,6 @@ namespace EFCoreApp.Controllers
         }
 
         // POST: Appointments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, AppointmentsViewModel viewModel)
@@ -223,7 +221,6 @@ namespace EFCoreApp.Controllers
 
         private void PopulateCustomerList(object selectedCustomer = null)
         {
-            //var customersQuery = from c in Context.Customers orderby c.Id select c;
             var customersQuery = Context.Customers.OrderBy(c => c.Id).ToList();
 
             ViewBag.CustomerList = new SelectList(customersQuery, "Id", "CustomerName", selectedCustomer);
